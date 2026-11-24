@@ -102,8 +102,15 @@ export async function onRequestPost({ request, env }) {
     return json({ error: 'The clone service is unreachable right now. Try again in a moment.' }, 502, cors);
   }
   if (!res.ok) {
-    console.log('Lixr AI error', res.status, (await res.text()).slice(0, 500));
-    return json({ error: res.status === 429 ? 'Lixr is busy. Try again in a minute.' : 'The clone service had a problem. Try again in a moment.' }, res.status === 429 ? 429 : 502, cors);
+    const detail = (await res.text()).slice(0, 500);
+    console.log('Lixr AI error', res.status, detail);
+    const msg = res.status === 401 ? 'The AI key was rejected (401). Check ANTHROPIC_API_KEY: it should start with sk-ant-api03-.'
+      : res.status === 403 ? 'The AI key isn’t allowed to do this (403). Check the key’s workspace in the Anthropic Console.'
+      : res.status === 400 && /credit|billing|balance/i.test(detail) ? 'Your Anthropic account is out of credits (400). Add credits under Billing in the Console.'
+      : res.status === 404 ? 'The AI model wasn’t found (404). Set LIXR_MODEL to a current model name.'
+      : res.status === 429 ? 'Lixr is busy. Try again in a minute.'
+      : 'The clone service had a problem (' + res.status + '). Try again in a moment.';
+    return json({ error: msg }, res.status === 429 ? 429 : 502, cors);
   }
   const data = await res.json();
   const block = (data.content || []).find(b => b.type === 'tool_use' && b.name === 'return_drinks');
