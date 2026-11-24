@@ -1,0 +1,5 @@
+api/config.php
+api/reports.log
+api/.ratelimit/
+.DS_Store
+*.keystore

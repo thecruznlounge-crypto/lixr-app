@@ -1,0 +1,41 @@
+# Lixr — Apache / cPanel settings
+
+# HTTPS only (needed for install, camera and the Play Store app)
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Clean API URLs (the same paths work on Cloudflare Pages Functions)
+RewriteRule ^api/(clone|report)$ api/$1.php [L]
+
+AddType application/manifest+json .webmanifest
+AddType font/woff .woff
+
+# The service worker and app shell must never be cached by the browser for long
+<FilesMatch "^(sw\.js|index\.html|manifest\.webmanifest)$">
+  Header set Cache-Control "no-cache"
+</FilesMatch>
+<FilesMatch "\.(css|js)$">
+  Header set Cache-Control "public, max-age=86400"
+</FilesMatch>
+<FilesMatch "\.(png|svg|woff)$">
+  Header set Cache-Control "public, max-age=2592000"
+</FilesMatch>
+
+# Digital Asset Links for the Play Store app must be served as JSON
+<Files "assetlinks.json">
+  Header set Content-Type "application/json"
+  Header set Access-Control-Allow-Origin "*"
+</Files>
+
+# Security headers
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "camera=(self), geolocation=(), microphone=()"
+
+# Protect server secrets, logs and rate-limit counters
+<FilesMatch "^(config\.php|config\.sample\.php|reports\.log)$">
+  Require all denied
+</FilesMatch>
+RedirectMatch 404 /api/\.ratelimit

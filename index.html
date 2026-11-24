@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lixr — See It · Clone It · Mix It</title>
+<meta name="description" content="Clone any drink. Scan a menu, snap a photo or describe a drink and get a recipe you can make at home.">
+<meta name="theme-color" content="#0B0710" id="themeColor">
+<meta name="color-scheme" content="dark light">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lixr">
+<link rel="preload" href="fonts/Poppins-Regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="fonts/Poppins-Bold.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="css/app.css">
+<script>
+  // Set the theme before paint so there's no flash.
+  (function () {
+    try {
+      var s = JSON.parse(localStorage.getItem('lixr.settings') || '{}');
+      var t = s.theme || 'dark';
+      if (t === 'system') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<a class="skip" href="#view">Skip to content</a>
+<div class="glow" aria-hidden="true"></div>
+<div class="shell">
+  <main id="view" tabindex="-1"></main>
+  <nav class="tabbar" id="tabbar" aria-label="Main">
+    <a href="#/home" data-tab="home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fillable" d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg><span>Home</span></a>
+    <a href="#/discover" data-tab="discover">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path class="fillable" d="M15.5 8.5l-2 5-5 2 2-5z"/></svg><span>Discover</span></a>
+    <a href="#/recipes" data-tab="recipes">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fillable" d="M4 4h16l-8 9z"/><path d="M12 13v7M8 20h8"/></svg><span>My Recipes</span></a>
+    <a href="#/favorites" data-tab="favorites">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fillable" d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg><span>Favorites</span></a>
+    <a href="#/profile" data-tab="profile">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle class="fillable" cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span>Profile</span></a>
+  </nav>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Menu" hidden></aside>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" hidden></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<input type="file" id="filePick" accept="image/*" hidden>
+<input type="file" id="fileCapture" accept="image/*" capture="environment" hidden>
+
+<script src="js/data.js"></script>
+<script src="js/art.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

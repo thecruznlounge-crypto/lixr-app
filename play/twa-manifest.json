@@ -1,0 +1,28 @@
+{
+  "packageId": "app.lixr.twa",
+  "host": "lixr.app",
+  "name": "Lixr — Clone Any Drink",
+  "launcherName": "Lixr",
+  "display": "standalone",
+  "themeColor": "#0B0710",
+  "navigationColor": "#0B0710",
+  "navigationColorDark": "#0B0710",
+  "backgroundColor": "#0B0710",
+  "enableNotifications": false,
+  "startUrl": "/#/home",
+  "iconUrl": "https://lixr.app/icons/icon-512.png",
+  "maskableIconUrl": "https://lixr.app/icons/maskable-512.png",
+  "webManifestUrl": "https://lixr.app/manifest.webmanifest",
+  "orientation": "default",
+  "fallbackType": "customtabs",
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "signingKey": { "path": "./lixr-upload.keystore", "alias": "lixr" },
+  "shortcuts": [
+    { "name": "Scan a menu", "shortName": "Scan", "url": "/#/clone/scan", "chosenIconUrl": "https://lixr.app/icons/icon-192.png" },
+    { "name": "Photo clone", "shortName": "Photo", "url": "/#/clone/photo", "chosenIconUrl": "https://lixr.app/icons/icon-192.png" },
+    { "name": "Describe a drink", "shortName": "Describe", "url": "/#/clone/describe", "chosenIconUrl": "https://lixr.app/icons/icon-192.png" }
+  ]
+}
