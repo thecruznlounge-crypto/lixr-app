@@ -40,6 +40,12 @@ play/                 Play Store guide, TWA config, icon, feature graphic
 
 On Cloudflare, the `functions/api/*.js` files handle `/api/clone` and `/api/report`. The `api/*.php` files are only for cPanel and do nothing there.
 
+## Deploy as a Cloudflare Worker (the newer "Import a repository" flow)
+If Cloudflare made a **Worker** (the build runs `npx wrangler deploy`), the repo is ready for that too. `wrangler.jsonc` serves the static files, and `worker.js` handles `/api/clone` and `/api/report`.
+1. Build command: *(empty)*. Deploy command: `npx wrangler deploy`. Root directory: `/`.
+2. Worker → Settings → Variables and Secrets: add `ANTHROPIC_API_KEY` (Secret) and `ALLOWED_ORIGINS` (Text). These are runtime variables, not build variables.
+3. Worker → Settings → Domains & Routes: add `lixr.app` as a custom domain.
+
 ## Deploy on cPanel
 1. Upload everything to `public_html` (or the domain's folder) with File Manager, including `.htaccess` and `.well-known`. Turn on "Show hidden files" so you can see them.
 2. Copy `api/config.sample.php` to `api/config.php`, then add your Anthropic API key and domain.
