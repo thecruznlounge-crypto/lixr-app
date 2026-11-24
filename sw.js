@@ -1,4 +1,4 @@
-const C='lixr-v3', A=['./','index.html','lixr-ai.js','manifest.json','hero.jpg','blue.jpg','berry.jpg','choc.jpg','icon-192.png','icon-512.png'];
+const C='lixr-v4', A=['./','index.html','lixr-ai.js','manifest.json','hero.jpg','blue.jpg','berry.jpg','choc.jpg','icon-192.png','icon-512.png','maskable-192.png','maskable-512.png','apple-touch-icon.png','favicon.svg'];
 // Install the new version right away instead of waiting for every tab to close.
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>c.addAll(A)))});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
