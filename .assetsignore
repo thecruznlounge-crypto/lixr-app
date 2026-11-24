@@ -1,11 +1,5 @@
 .git
 .gitignore
 .assetsignore
-.htaccess
 wrangler.jsonc
-worker.js
-functions
-api
-node_modules
-.wrangler
-*.keystore
+README.txt

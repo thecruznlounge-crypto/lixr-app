@@ -1,14 +1,6 @@
-// Lixr on Cloudflare Workers (Workers Builds runs `npx wrangler deploy`).
-// Static files are served from this folder; /api/* goes to worker.js.
-// Secrets: Worker → Settings → Variables and Secrets → ANTHROPIC_API_KEY (Secret), ALLOWED_ORIGINS (Text).
+// Lets Cloudflare deploy this folder as a static site (Workers Builds runs `npx wrangler deploy`).
 {
   "name": "lixr-app",
-  "main": "worker.js",
   "compatibility_date": "2025-06-01",
-  "assets": {
-    "directory": "./",
-    "binding": "ASSETS",
-    "run_worker_first": ["/api/*"]
-  },
-  "observability": { "enabled": true }
+  "assets": { "directory": "./" }
 }
