@@ -4,6 +4,7 @@
  * Set these in Cloudflare → Pages → lixr → Settings → Variables and Secrets:
  *   ANTHROPIC_API_KEY  (secret, required)
  *   LIXR_MODEL         (optional, default claude-sonnet-5-5)
+ *   ANTHROPIC_WORKSPACE_ID (optional, needed only for keys not scoped to a workspace)
  *   ALLOWED_ORIGINS    (optional, comma-separated, e.g. https://lixr.app,https://www.lixr.app)
  *   REQUESTS_PER_HOUR  (optional, default 30; needs a KV binding named LIXR_KV to enforce)
  */
@@ -88,7 +89,7 @@ export async function onRequestPost({ request, env }) {
   try {
     res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+      headers: Object.assign({ 'content-type': 'application/json', 'x-api-key': String(env.ANTHROPIC_API_KEY).trim(), 'anthropic-version': '2023-06-01' }, env.ANTHROPIC_WORKSPACE_ID ? { 'anthropic-workspace-id': String(env.ANTHROPIC_WORKSPACE_ID).trim() } : {}),
       body: JSON.stringify({
         model: env.LIXR_MODEL || 'claude-sonnet-5-5',
         max_tokens: action === 'menu' ? 6000 : 2000,
@@ -104,9 +105,10 @@ export async function onRequestPost({ request, env }) {
   if (!res.ok) {
     const detail = (await res.text()).slice(0, 500);
     console.log('Lixr AI error', res.status, detail);
-    const msg = res.status === 401 ? 'The AI key was rejected (401). Check ANTHROPIC_API_KEY: it should start with sk-ant-api03-.'
+    const msg = res.status === 401 ? 'The AI key was rejected (401). Check ANTHROPIC_API_KEY is the full key, pasted as-is, and hasn’t expired.'
       : res.status === 403 ? 'The AI key isn’t allowed to do this (403). Check the key’s workspace in the Anthropic Console.'
       : res.status === 400 && /credit|billing|balance/i.test(detail) ? 'Your Anthropic account is out of credits (400). Add credits under Billing in the Console.'
+      : /workspace/i.test(detail) ? 'This key needs a workspace (' + res.status + '). Add ANTHROPIC_WORKSPACE_ID in Cloudflare with the Workspace ID from the Console.'
       : res.status === 404 ? 'The AI model wasn’t found (404). Set LIXR_MODEL to a current model name.'
       : res.status === 429 ? 'Lixr is busy. Try again in a minute.'
       : 'The clone service had a problem (' + res.status + '). Try again in a moment.';
