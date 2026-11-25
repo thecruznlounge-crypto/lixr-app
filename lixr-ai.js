@@ -46,7 +46,7 @@
     const steps = x.steps.slice(0, 12).map(t => s(t, 240)).filter(Boolean);
     if (!ingredients.length || !steps.length) return null;
     return { id: 'ai' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), ai: true, match: s(x.match, 20) || 'Close match',
-      name: s(x.name, 60), type: TYPE[x.cat] || 'Cocktail', desc: s(x.desc, 280), img: pickImg(x.color2 || x.color), ingredients, steps };
+      name: s(x.name, 60), type: TYPE[x.cat] || 'Cocktail', barPrice: Number(x.price) > 0 && Number(x.price) < 500 ? Number(x.price) : undefined, desc: s(x.desc, 280), img: pickImg(x.color2 || x.color), ingredients, steps };
   }
 
   window.match = async function () {

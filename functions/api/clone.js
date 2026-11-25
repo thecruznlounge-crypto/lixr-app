@@ -64,7 +64,7 @@ export async function onRequestPost({ request, env }) {
 
   const content = [];
   if (action !== 'describe') content.push({ type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: image } });
-  if (action === 'menu') content.push({ type: 'text', text: 'This is a photo of a drink menu. Read the drinks on it (up to 8, in menu order) and clone each one from its name and listed ingredients. Keep each drink\'s menu name. If you can\'t read a menu, return an empty list and a message asking for a closer, brighter photo.' + (query ? '\nUser note: ' + query : '') });
+  if (action === 'menu') content.push({ type: 'text', text: 'This is a photo of a drink menu. Read the drinks on it (up to 8, in menu order) and clone each one from its name and listed ingredients. Keep each drink\'s menu name and include its menu price if one is printed. If you can\'t read a menu, return an empty list and a message asking for a closer, brighter photo.' + (query ? '\nUser note: ' + query : '') });
   else if (action === 'photo') content.push({ type: 'text', text: 'This is a photo of a drink. Work out what it most likely is from its color, glass, garnish and any visible label or setting, and clone it as one recipe.' + (query ? '\nUser note: ' + query : '') });
   else content.push({ type: 'text', text: 'Clone this drink as one recipe. The user\'s description:\n"""\n' + query + '\n"""' });
 
@@ -78,6 +78,7 @@ export async function onRequestPost({ request, env }) {
       glass: { type: 'string', enum: GLASSES }, garnish: { type: 'string', enum: GARNISHES },
       color: { type: 'string' }, color2: { type: 'string' },
       match: { type: 'string', enum: ['Exact match', 'Close match', 'Inspired by'] },
+      price: { type: 'number', description: 'The drink price printed on the menu, in dollars, if visible. Leave out otherwise.' },
       serves: { type: 'integer' }, tags: { type: 'array', items: { type: 'string' } },
       mocktail: { type: 'object', properties: { ...parts, desc: { type: 'string' }, color: { type: 'string' }, color2: { type: 'string' } }, required: ['ingredients', 'steps'] },
       ...parts
