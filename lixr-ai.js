@@ -29,7 +29,7 @@
     toJpeg(f).then(b => { lastImage = b; }).catch(e => { $('#matches').textContent = e.message; });
   };
 
-  const TYPE = { cocktail: 'Cocktail', mocktail: 'Mocktail', coffee: 'Coffee & more', boba: 'Coffee & more' };
+  const TYPE = { cocktail: 'Cocktail', mocktail: 'Mocktail', coffee: 'Coffee', boba: 'Tea' };
   function pickImg(hex) {
     const m = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(hex || '');
     if (!m) return 'hero.jpg';
